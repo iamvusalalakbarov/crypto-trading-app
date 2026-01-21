@@ -1,3 +1,5 @@
+import { AssetsTable } from "@/components/AssetsTable";
+
 export default function HomePage() {
-  return <>Crypto Trading App</>;
+  return <AssetsTable />;
 }
