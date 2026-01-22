@@ -1,4 +1,6 @@
-export const fetchAssets = async () => {
+import { Asset } from "@/lib/types";
+
+export const fetchAssets = async (): Promise<Asset[]> => {
   const url = `${process.env.NEXT_PUBLIC_COINGECKO_API_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false`;
 
   const response = await fetch(url, {
