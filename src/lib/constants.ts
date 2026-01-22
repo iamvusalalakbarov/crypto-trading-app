@@ -1,4 +1,6 @@
-export const NAV_LINKS = [
+import { NavLink } from "@/lib/types";
+
+export const NAV_LINKS: NavLink[] = [
   {
     id: 1,
     name: "Home",
@@ -9,6 +11,6 @@ export const NAV_LINKS = [
     name: "Trade",
     href: "/trade",
   },
-];
+] as const;
 
 export const ASSETS_PER_PAGE = 10;
