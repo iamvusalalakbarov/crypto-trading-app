@@ -25,3 +25,5 @@ export interface Asset {
   image: string;
   current_price: number;
 }
+
+export type TradeInputBlockVariant = "primary" | "secondary";
