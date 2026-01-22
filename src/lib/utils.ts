@@ -14,3 +14,24 @@ export const getSortedAssets = (
     return (a.current_price - b.current_price) * mod;
   });
 };
+
+export const getExchangeValue = (
+  amount: string,
+  price: number,
+  isSwapped: boolean
+): string => {
+  const num = Number.parseFloat(amount);
+
+  if (!amount || Number.isNaN(num) || price === 0) {
+    return "";
+  }
+
+  const result = isSwapped ? num / price : num * price;
+
+  return isSwapped
+    ? result.toFixed(6)
+    : result.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+};
