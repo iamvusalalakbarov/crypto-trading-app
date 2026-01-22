@@ -24,7 +24,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
       >
         <ReactQueryProvider>
           <Header />
-          <main className="p-8">{children}</main>
+          <main className="container mx-auto py-8">{children}</main>
         </ReactQueryProvider>
       </body>
     </html>
