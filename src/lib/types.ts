@@ -27,3 +27,9 @@ export interface Asset {
 }
 
 export type TradeInputBlockVariant = "primary" | "secondary";
+
+export interface NavLink {
+  id: number;
+  name: string;
+  href: string;
+}
