@@ -1,5 +1,6 @@
 import { Typography } from "@/components/ui/Typography";
 import { Asset } from "@/lib/types";
+import { formatCurrency } from "@/lib/utils";
 
 interface TradeFormFooterProps {
   selectedAsset: Asset;
@@ -22,7 +23,7 @@ export const TradeFormFooter = ({ selectedAsset }: TradeFormFooterProps) => {
         className="text-cyan-400 font-mono font-bold text-xs"
       >
         1 {selectedAsset.symbol.toUpperCase()} = $
-        {selectedAsset.current_price.toLocaleString()}
+        {formatCurrency(selectedAsset.current_price)}
       </Typography>
     </div>
   );
