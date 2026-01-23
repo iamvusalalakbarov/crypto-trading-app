@@ -3,7 +3,7 @@ import { SortOrder } from "@/lib/types";
 
 interface AssetsTableHeadProps {
   label: string;
-  active: boolean;
+  isActive: boolean;
   order: SortOrder;
   onClick: () => void;
   width?: string;
@@ -11,7 +11,7 @@ interface AssetsTableHeadProps {
 
 export const AssetsTableHead = ({
   label,
-  active,
+  isActive,
   order,
   onClick,
   width,
@@ -21,7 +21,7 @@ export const AssetsTableHead = ({
     onClick={onClick}
   >
     <div className="flex items-center gap-2 text-slate-400 uppercase text-xs font-bold tracking-wider">
-      {label} <SortIndicator active={active} order={order} />
+      {label} <SortIndicator isActive={isActive} order={order} />
     </div>
   </th>
 );
