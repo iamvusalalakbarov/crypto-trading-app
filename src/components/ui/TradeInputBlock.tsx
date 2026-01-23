@@ -10,7 +10,6 @@ interface TradeInputBlockProps {
   isUSD: boolean;
   selectedAsset: Asset;
   assets: Asset[];
-  isLoggedIn: boolean;
   onAssetSelect: (asset: Asset) => void;
   isReadOnly?: boolean;
   variant?: TradeInputBlockVariant;
@@ -23,7 +22,6 @@ export const TradeInputBlock = ({
   isUSD,
   selectedAsset,
   assets,
-  isLoggedIn,
   onAssetSelect,
   isReadOnly,
   variant = "primary",
@@ -35,7 +33,7 @@ export const TradeInputBlock = ({
       variant === "primary"
         ? "bg-slate-950 border-slate-800"
         : "bg-slate-950/50 border-slate-800/50",
-      isLoggedIn && !isReadOnly ? "focus-within:border-cyan-500" : "opacity-50"
+      !isReadOnly && "focus-within:border-cyan-500"
     )}
   >
     <Typography
@@ -50,10 +48,12 @@ export const TradeInputBlock = ({
         placeholder="0.00"
         value={amount}
         onChange={(e) => onAmountChange?.(e.target.value)}
-        readOnly={isReadOnly || !isLoggedIn}
+        readOnly={isReadOnly}
         className={clsx(
           "bg-transparent text-2xl font-bold border-none !p-0 h-10 focus-visible:ring-0 flex-1 pr-4",
-          isReadOnly ? "text-slate-500 cursor-not-allowed" : "text-white"
+          isReadOnly
+            ? "text-slate-500 cursor-not-allowed opacity-50"
+            : "text-white"
         )}
       />
       <div className="shrink-0 absolute right-5 top-1/2 -translate-y-1/2">
@@ -66,7 +66,6 @@ export const TradeInputBlock = ({
             selectedAsset={selectedAsset}
             assets={assets}
             onSelect={onAssetSelect}
-            disabled={!isLoggedIn}
           />
         )}
       </div>
