@@ -17,6 +17,7 @@ import { LoginCredentials, LoginFormErrors } from "@/lib/types";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onExited: () => void;
 }
 
 const initialState: LoginCredentials = {
@@ -24,22 +25,19 @@ const initialState: LoginCredentials = {
   password: "",
 };
 
-export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
-  const [form, setForm] = useState<LoginCredentials>(initialState);
+export const LoginModal = ({ isOpen, onClose, onExited }: LoginModalProps) => {
+  const [formValues, setFormValues] = useState<LoginCredentials>(initialState);
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const login = useAuthStore((state) => state.login);
 
   const handleClose = () => {
     onClose();
-    setTimeout(() => {
-      setForm(initialState);
-      setErrors({});
-    }, 200);
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const handleChange = ({
+    target: { name, value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -47,10 +45,10 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
     const newErrors: LoginFormErrors = {};
 
-    if (!form.email.includes("@")) {
+    if (!formValues.email.includes("@")) {
       newErrors.email = "Please enter a valid email address.";
     }
-    if (form.password.length < 6) {
+    if (formValues.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters.";
     }
 
@@ -59,12 +57,12 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
       return;
     }
 
-    login(form.email);
+    login(formValues.email);
     handleClose();
   };
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={isOpen} as={Fragment} afterLeave={onExited}>
       <Dialog as="div" className="relative z-50" onClose={handleClose}>
         <TransitionChild
           as={Fragment}
@@ -113,7 +111,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                     name="email"
                     type="email"
                     placeholder="example@mail.com"
-                    value={form.email}
+                    value={formValues.email}
                     onChange={handleChange}
                     errorMessage={errors.email}
                     required
@@ -124,7 +122,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                     name="password"
                     type="password"
                     placeholder="••••••••"
-                    value={form.password}
+                    value={formValues.password}
                     onChange={handleChange}
                     errorMessage={errors.password}
                     required
