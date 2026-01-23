@@ -13,20 +13,25 @@ import { ASSETS_PER_PAGE } from "@/lib/constants";
 
 export const AssetsTable = () => {
   const [displayCount, setDisplayCount] = useState(ASSETS_PER_PAGE);
-  const [sortKey, setSortKey] = useState<SortKey>("price");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
-  const { data, isLoading, error, refetch } = useAssets();
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [nameOrder, setNameOrder] = useState<SortOrder>("asc");
+  const [priceOrder, setPriceOrder] = useState<SortOrder>("desc");
+  const { data, isLoading, error, refetch } = useAssets(nameOrder);
 
-  const sortedAssets = useMemo(
-    () => getSortedAssets(data, sortKey, sortOrder),
-    [data, sortKey, sortOrder]
-  );
+  const sortedAssets = useMemo(() => {
+    const currentOrder = sortKey === "name" ? nameOrder : priceOrder;
+
+    return getSortedAssets(data, sortKey, currentOrder);
+  }, [data, sortKey, nameOrder, priceOrder]);
 
   const handleSort = (key: SortKey) => {
-    const newOrder = sortKey === key && sortOrder === "desc" ? "asc" : "desc";
-
-    setSortOrder(newOrder);
-    setSortKey(key);
+    if (key === "name") {
+      setNameOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+      setSortKey("name");
+    } else {
+      setPriceOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+      setSortKey("price");
+    }
   };
 
   const handleShowMore = () => {
@@ -64,15 +69,15 @@ export const AssetsTable = () => {
             <tr className="bg-slate-900/80">
               <AssetsTableHead
                 label="Asset"
-                active={sortKey === "name"}
-                order={sortOrder}
+                isActive={sortKey === "name"}
+                order={nameOrder}
                 width="w-[50%]"
                 onClick={() => handleSort("name")}
               />
               <AssetsTableHead
                 label="Price"
-                active={sortKey === "price"}
-                order={sortOrder}
+                isActive={sortKey === "price"}
+                order={priceOrder}
                 width="w-[30%]"
                 onClick={() => handleSort("price")}
               />
