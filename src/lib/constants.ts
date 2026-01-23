@@ -5,11 +5,13 @@ export const NAV_LINKS: NavLink[] = [
     id: 1,
     name: "Home",
     href: "/",
+    isProtected: false,
   },
   {
     id: 2,
     name: "Trade",
     href: "/trade",
+    isProtected: true,
   },
 ] as const;
 
