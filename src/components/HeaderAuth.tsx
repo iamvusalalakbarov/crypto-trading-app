@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Typography } from "@/components/ui/Typography";
 import { LoginModal } from "@/components/LoginModal";
@@ -8,15 +9,25 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export const HeaderAuth = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const { isLoggedIn, userEmail, logout } = useAuthStore();
+  const [renderModal, setRenderModal] = useState(false);
+  const { isLoggedIn, userEmail, logout, _hasHydrated } = useAuthStore();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  useLayoutEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsMounted(true);
-  }, []);
+  const handleLogout = () => {
+    logout();
 
-  if (!isMounted) return null;
+    if (pathname.startsWith("/trade")) {
+      router.replace("/");
+    }
+  };
+
+  const openModal = () => {
+    setRenderModal(true);
+    setIsLoginOpen(true);
+  };
+
+  if (!_hasHydrated) return null;
 
   if (isLoggedIn) {
     return (
@@ -27,7 +38,7 @@ export const HeaderAuth = () => {
         >
           {userEmail}
         </Typography>
-        <Button variant="outline" onClick={() => logout()}>
+        <Button variant="outline" onClick={handleLogout}>
           <Typography>Log out</Typography>
         </Button>
       </div>
@@ -36,10 +47,16 @@ export const HeaderAuth = () => {
 
   return (
     <>
-      <Button onClick={() => setIsLoginOpen(true)}>
+      <Button onClick={openModal}>
         <Typography>Log in</Typography>
       </Button>
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      {renderModal && (
+        <LoginModal
+          isOpen={isLoginOpen}
+          onClose={() => setIsLoginOpen(false)}
+          onExited={() => setRenderModal(false)}
+        />
+      )}
     </>
   );
 };
