@@ -1,10 +1,9 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { clsx } from "clsx";
 import { TypographyVariant } from "@/lib/types";
 
 interface TypographyProps<T extends React.ElementType> {
   variant?: TypographyVariant;
-  children: React.ReactNode;
   className?: string;
   as?: T;
 }
@@ -15,7 +14,8 @@ export const Typography = <T extends React.ElementType = "p">({
   className,
   as,
   ...props
-}: TypographyProps<T> & React.ComponentPropsWithoutRef<T>) => {
+}: PropsWithChildren<TypographyProps<T>> &
+  React.ComponentPropsWithoutRef<T>) => {
   const Tag = as ?? (variant.startsWith("h") ? variant : "p");
 
   const variants: Record<TypographyVariant, string> = {
