@@ -1,7 +1,8 @@
-import { Asset } from "@/lib/types";
+import { Asset, SortOrder } from "@/lib/types";
 
-export const fetchAssets = async (): Promise<Asset[]> => {
-  const url = `${process.env.NEXT_PUBLIC_COINGECKO_API_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false`;
+export const fetchAssets = async (order: SortOrder): Promise<Asset[]> => {
+  const apiOrder = `id_${order}`;
+  const url = `${process.env.NEXT_PUBLIC_COINGECKO_API_URL}/coins/markets?vs_currency=usd&order=${apiOrder}&per_page=100&sparkline=false&category=layer-1`;
 
   const response = await fetch(url, {
     headers: {
