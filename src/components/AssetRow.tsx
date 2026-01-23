@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Typography } from "@/components/ui/Typography";
 import { AssetActions } from "./AssetActions";
 import { Asset } from "@/lib/types";
+import { formatCurrency } from "@/lib/utils";
 
 interface AssetRowProps {
   asset: Asset;
@@ -28,11 +29,7 @@ export const AssetRow = ({ asset }: AssetRowProps) => {
 
       <td className="p-4 border-b border-slate-800/50">
         <Typography variant="body" className="font-mono text-slate-200">
-          $
-          {(asset.current_price ?? 0).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
+          ${formatCurrency(asset.current_price)}
         </Typography>
       </td>
 
