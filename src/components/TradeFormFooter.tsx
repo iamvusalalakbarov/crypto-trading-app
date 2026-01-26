@@ -15,7 +15,7 @@ export const TradeFormFooter = ({ selectedAsset }: TradeFormFooterProps) => {
           variant="caption"
           className="text-slate-500 text-[10px] font-bold uppercase tracking-wider"
         >
-          Live Market Price
+          Current Price
         </Typography>
       </div>
       <Typography
